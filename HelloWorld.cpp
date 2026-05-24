@@ -5,7 +5,8 @@
 
 int main()
 {
-    std::cout << HelloWorld::PrintHelloWorld();
+    std::cout << HelloWorld::PrintHelloWorld() << '\n';
+    std::cout << HelloWorld::hello << '\n';
     return 0;
 
 };
