@@ -14,6 +14,7 @@
 #include <random>
 #include <limits>
 #include <cctype>
+#include <cassert>
 
 namespace{
 
@@ -30,23 +31,25 @@ int main()
     int int_rolls{};
     std::string rolls{};
     
-    //if input fails reset the operation mode to normal
-    if(!std::cin)
-    {
-        std::cin.clear();
-    }
-    
+    //look at that,i've found a reason to use a do-while loop :)
     do{
         std::cout <<"How many times would you like to roll?" << '\n';
         std::cout <<"please enter numbers only " << '\n';
         std::cin >> rolls;
+
+        if(std::cin.eof())
+        {
+            std::exit(1);
+        }
+
+        //clear input buffer
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
     while(!isNumber(rolls));
 
     int_rolls = std::stoi(rolls);
-
-    //clear input buffer
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    assert(int_rolls > 0);
+    
 
     //random device
     std::random_device rd;
@@ -73,6 +76,11 @@ namespace{
 
     bool isNumber(std::string_view userInput)
     {
+        if(userInput.empty())
+        {
+            return false;
+        }
+
         for(char c : userInput)
         {
             if(!std::isdigit(c))
